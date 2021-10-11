@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>These are my five favorite countries: </h1>
+
+<ol>
+    {% for country in countries %}
+        <li>{{ country }}</li>
+    {% endfor %}
+</ol>
+
+{% endblock %}
