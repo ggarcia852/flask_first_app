@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h4>Register Here:</h4>
+    <form action="" method='post'>
+        {{ form.csrf_token }}
+        <div class="form-group">
+            <fieldset>
+                {{ form.username.label }}
+                {{ form.username(class="form-control", placeholder="username") }}
+            </fieldset>
+            <fieldset>
+                {{ form.email.label }}
+                {{ form.email(class="form-control", placeholder="email") }}
+            </fieldset>
+            <fieldset>
+                {{ form.password.label }}
+                {{ form.password(class="form-control", placeholder="password") }}
+            </fieldset>
+            <fieldset>
+                {{ form.confirm_password.label }}
+                {{ form.confirm_password(class="form-control", placeholder="confirm password") }}
+            </fieldset>
+            {{ form.submit(class='btn btn-success') }}
+        </div>
+    </form>
+{% endblock %}
