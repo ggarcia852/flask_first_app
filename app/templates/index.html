@@ -2,7 +2,18 @@
 
 {% block content %}
 
-<h1>Hello World</h1>
-<h4>Welcome, {{ user }}</h4>
+<div class="container ps-5 ms-4">
+<h1>Hello World!</h1>
+</div>
+
+<div class="container">
+    <img src="{{url_for('static', filename='world-in-your-hands.jpg')}}" height="500">
+</div>
+
+<div class="container text-success">
+<h1>Let's Go Somewhere...</h1>
+</div>
 
 {% endblock %}
+
+

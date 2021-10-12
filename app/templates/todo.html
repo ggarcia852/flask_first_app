@@ -2,10 +2,22 @@
 
 {% block content %}
 
+<div class="=container">
 <h1>Top countries I'd like to visit: </h1>
+</div>
 
+<div class="text-secondary">
 {% for country in countries %}
     <li>{{ country }}</li>
 {% endfor %}
+</div>
+
+<div class="container ps-5 ms-5 pt-3">
+    <img src="{{url_for('static', filename='fly.jpg')}}" height="500">
+</div>
+
+<div class="text-secondary ps-5 ms-5 mt-2">
+    <h1>Where to next?</h1>
+</div>
 
 {% endblock %}

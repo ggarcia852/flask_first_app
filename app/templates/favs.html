@@ -1,13 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div>
+    <h1>These are my five favorite countries: </h1>
 
-<h1>These are my five favorite countries: </h1>
+    <ol>
+        {% for country in countries %}
+            <li>{{ country }}</li>
+        {% endfor %}
+    </ol>
+</div>
 
-<ol>
-    {% for country in countries %}
-        <li>{{ country }}</li>
-    {% endfor %}
-</ol>
+<div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <img src="{{url_for('static', filename='thailand.jpg')}}" height="200" width="auto">
+      </div>
+      <div class="col-sm">
+        <img src="{{url_for('static', filename='spain.jpg')}}" height="200" width="auto">
+      </div>
+      <div class="col-sm">
+        <img src="{{url_for('static', filename='india.jpg')}}" height="200" width="auto">
+      </div>
+      <div class="col-sm">
+        <img src="{{url_for('static', filename='newzealand.jpg')}}" height="200" width="355">
+      </div>
+      <div class="col-sm">
+        <img src="{{url_for('static', filename='nepal.jpg')}}" height="200" width="auto">
+      </div>
+    </div>
+  </div>
 
 {% endblock %}
