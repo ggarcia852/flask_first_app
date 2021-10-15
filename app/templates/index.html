@@ -4,6 +4,7 @@
 
 <div class="container ps-5 ms-4">
 <h1>Hello World!</h1>
+<h4>Welcome, {{ current_user.username }}</h4>
 </div>
 
 <div class="container">
@@ -12,6 +13,26 @@
 
 <div class="container text-success">
 <h1>Let's Go Somewhere...</h1>
+</div>
+
+
+<div>
+    {% for p in posts %} 
+    <div class="card">
+        <div class="card-header">
+            {{ p.title }}
+        </div>
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <p>{{ p.content }}  </p>          
+            <footer class="blockquote-footer">{{ p.author.username }}, <cite title="Source Title"> {{ p.date_created.strftime('%A, %b %d, %Y at %I:%M%p') }}</cite></footer>
+          </blockquote>
+        </div>
+      </div>
+      
+        
+    {% endfor %}
+
 </div>
 
 {% endblock %}
