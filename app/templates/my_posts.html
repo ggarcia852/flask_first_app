@@ -12,7 +12,7 @@
         <p>{{ p.content }}  </p>          
         <footer class="blockquote-footer">{{ p.author.username }}, <cite title="Source Title"> {{ p.date_created.strftime('%A, %b %d, %Y at %I:%M%p') }}</cite></footer>
       </blockquote>
-      <a href="{{ url_for('post_detail', post_id=p.id) }}" class="btn btn-success">More Info</a>
+      <a href="{{ url_for('post_detail', post_id=p.id) }}" class="btn btn-sm btn-dark">View Post</a>
       
     </div>
   </div>

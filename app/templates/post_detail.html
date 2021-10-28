@@ -4,7 +4,7 @@
 {% block content %}
 
 
-<div class="card bg-primary text-dark">
+<div class="card text-dark">
     <div class="card-header">
     {{ post.title }}
     </div>
@@ -15,10 +15,10 @@
                 {{ post.date_created.strftime('%A, %b %d, %Y at %I:%M%p') }}
             </cite></footer>
         </blockquote>
-        <a href="{{ url_for('post_update', post_id=post.id) }}" class="btn btn-success">Update</a>
+        <a href="{{ url_for('post_update', post_id=post.id) }}" class="btn btn-sm btn-success">Update</a>
             
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
                 Delete
             </button>
             
@@ -35,7 +35,7 @@
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <form action="{{ url_for('post_update', post_id=post.id) }}" method="post">
+                    <form action="{{ url_for('post_delete', post_id=post.id) }}" method="post">
                         <input type="submit" class="btn btn-danger" value="Yes I'm Sure">
                     </form>
                     </div>
