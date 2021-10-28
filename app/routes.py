@@ -4,7 +4,40 @@ from flask_mail import Message
 from app.forms import LoginForm, UserInfoForm,  PostForm
 from app.models import Post, User
 from flask_login import login_user, logout_user, current_user, login_required
-from flask_httpauth import HTTPBasicAuth
+from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
+from datetime import date, datetime
+
+
+########## Authenication - Should be in seperate file   #############
+
+basic_auth = HTTPBasicAuth()
+token_auth = HTTPTokenAuth()
+
+@basic_auth.verify_password
+def verify(username, password):
+    user = User.query.filter_by(username=username).first()
+    if user and user.check_password(password):
+        return user
+
+
+@app.route('/api/token', methods=['POST'])
+@basic_auth.login_required
+def get_token():
+    token = basic_auth.current_user().get_token()
+    return jsonify({'token': token})
+
+
+@token_auth.verify_token
+def verify(token):
+    user = User.query.filter_by(token=token).first()
+    if user and user.token_expiration > datetime.utcnow():
+        return user
+
+
+
+
+
+
 
 @app.route('/')
 def index():
@@ -164,6 +197,9 @@ def post_delete(post_id):
 ################    Start of JSON/API     #######################
 
 
+##### USERS  #######
+
+
 @app.route('/api/users')
 def get_users():
     """
@@ -207,37 +243,33 @@ def create_user():
     return jsonify(new_user.to_dict()), 201
 
 
-@app.route('/api/users/<id>', methods=['PUT'])
+@app.route('/api/users/<int:id>', methods=['PUT'])
+@token_auth.login_required
 def update_user(id):
+    current_user = token_auth.current_user()
+    if current_user.id != id:
+        return jsonify({'error': 'You do not have access to update this user'}), 403
     user = User.query.get_or_404(id)
     data = request.json
     user.update_user(data)
     return jsonify(user.to_dict())
 
 
-@app.route('/api/users/<id>', methods=['DELETE'])
+@app.route('/api/users/<int:id>', methods=['DELETE'])
+@token_auth.login_required
 def delete_user(id):
+    current_user = token_auth.current_user()
+    if current_user.id != id:
+        return jsonify({'error': 'You do not have access to delete this user'}), 403
     user = User.query.get_or_404(id)
     user.delete()
     return jsonify({}), 204
 
 
 
-# basic_auth = HTTPBasicAuth()
-
-# @basic_auth.verify_password
-# def verify(username, password):
-#     user = User.query.filter_by(username=username).first()
-#     if user and user.check_password(password):
-#         return user
 
 
-# @app.route('/api/token', methods=['POST'])
-# @basic_auth.login_required
-# def get_token():
-#     token = basic_auth.current_user().get_token()
-#     return jsonify({'token': token})
-
+########  POSTS  ########
 
 
 
@@ -260,6 +292,7 @@ def get_post(id):
 
 
 @app.route('/api/posts', methods=['POST'])
+@token_auth.login_required
 def create_post():
     data = request.json
     for field in ['title', 'content', 'user_id']:
@@ -277,15 +310,23 @@ def create_post():
 
 
 @app.route('/api/posts/<id>', methods=['PUT'])
+@token_auth.login_required
 def update_post(id):
     post = Post.query.get_or_404(id)
+    current_user = token_auth.current_user()
+    if post.author.id != current_user.id:
+        return jsonify({'error': 'You do not have access to update this post'}), 403
     data = request.json
     post.update_post(data)
     return jsonify(post.to_dict())
 
 
 @app.route('/api/posts/<id>', methods=['DELETE'])
+@token_auth.login_required
 def delete_post(id):
     post = Post.query.get_or_404(id)
+    current_user = token_auth.current_user()
+    if post.author.id != current_user.id:
+        return jsonify({'error': 'You do not have access to delete this post'}), 403
     post.delete()
     return jsonify({}), 204

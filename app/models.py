@@ -60,7 +60,7 @@ class User(db.Model, UserMixin):
                     setattr(self, field, data[field])
         db.session.commit()
 
-    def get_token(self, expires_in=300):
+    def get_token(self, expires_in=3600):
         now = datetime.utcnow()
         if self.token and self.token_expiration > now + timedelta(seconds=60):
             return self.token
