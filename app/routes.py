@@ -179,7 +179,7 @@ def get_user(id):
     [GET] /api/users/<user_id> - Returns 1 user
     """
     user = User.query.get_or_404(id)
-    return jsonify(user.to_dict())
+    return jsonify(user.to_dict(True))
 
 
 @app.route('/api/users', methods=['POST'])
@@ -204,7 +204,7 @@ def create_user():
     new_user.save()
 
 
-    return jsonify(new_user.to_dict())
+    return jsonify(new_user.to_dict()), 201
 
 
 @app.route('/api/users/<id>', methods=['PUT'])
@@ -217,7 +217,9 @@ def update_user(id):
 
 @app.route('/api/users/<id>', methods=['DELETE'])
 def delete_user(id):
-    pass
+    user = User.query.get_or_404(id)
+    user.delete()
+    return jsonify({}), 204
 
 
 
@@ -271,7 +273,7 @@ def create_post():
     new_post = Post(title, content, user_id)
     new_post.save()
 
-    return jsonify(new_post.to_dict())
+    return jsonify(new_post.to_dict()), 201
 
 
 @app.route('/api/posts/<id>', methods=['PUT'])
@@ -284,4 +286,6 @@ def update_post(id):
 
 @app.route('/api/posts/<id>', methods=['DELETE'])
 def delete_post(id):
-    pass
+    post = Post.query.get_or_404(id)
+    post.delete()
+    return jsonify({}), 204

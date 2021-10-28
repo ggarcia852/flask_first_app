@@ -2,21 +2,21 @@
 
 {% block content %}
 
-<h1>Make a post</h1>
+<h1>Create a New Post</h1>
 <div class="container">
     <form action="" autocomplete="off" method="post">
         {{ form.hidden_tag() }}
         <div class="form-group">
             <fieldset>
                 {{ form.title.label }}
-                {{ form.title(class='form-control', placeholder='title') }}
+                {{ form.title(class='form-control', placeholder='Post Title') }}
             </fieldset>
             <fieldset>
                 {{ form.content.label }}
-                {{ form.content(class='form-control', placeholder='content') }}
+                {{ form.content(class='form-control', placeholder='Post Content') }}
             </fieldset>
         </div>
-        {{ form.submit(class='btn btn-success') }}
+        {{ form.submit(class='btn btn-sm btn-success') }}
     </form>
 </div>
 

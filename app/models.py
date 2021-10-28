@@ -32,16 +32,23 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
-    def to_dict(self):
+    def to_dict(self, with_posts=False):
         user_dict = {
             'id': self.id,
             'username': self.username,
             'email': self.email
         }
+        ## to select posts for specific user
+        if with_posts:
+            user_dict['posts'] = [p.to_dict() for p in self.posts]
         return user_dict
 
     def save(self):
         db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
         db.session.commit()
 
     def update_user(self, data):
@@ -97,6 +104,10 @@ class Post(db.Model):
 
     def save(self):
         db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
         db.session.commit()
 
     def update_post(self, data):
